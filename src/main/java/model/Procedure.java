@@ -30,4 +30,13 @@ public class Procedure {
         return patientFirstName.toUpperCase().endsWith("A") ? "K" : "M";
     }
 
+    @Override
+    public String toString() {
+        return "Procedure{" +
+                "patientLastName='" + patientLastName + '\'' +
+                ", patientFirstName='" + patientFirstName + '\'' +
+                ", procedureName='" + procedureName + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
