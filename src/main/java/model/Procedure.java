@@ -6,15 +6,20 @@ public class Procedure {
     private String patientLastName;
     private String patientFirstName;
     private String procedureName;
-    private String doctor;
     private LocalDate date;
 
-    public Procedure(String patientLastName, String patientFirstName, String procedureName, String doctor, LocalDate date) {
+    public Procedure(String patientLastName, String patientFirstName, String procedureName,  LocalDate date) {
         this.patientLastName = patientLastName;
         this.patientFirstName = patientFirstName;
         this.procedureName = procedureName;
-        this.doctor = doctor;
         this.date = date;
+    }
+
+    public Procedure(String patientLastName, String patientFirstName, String procedureName) {
+        this.patientLastName = patientLastName;
+        this.patientFirstName = patientFirstName;
+        this.procedureName = procedureName;
+
     }
 
     public String getPatientInitials() {
