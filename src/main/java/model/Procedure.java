@@ -40,6 +40,14 @@ public class Procedure {
         return patientFirstName.toUpperCase().endsWith("A") ? "K" : "M";
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public String getProcedureName() {
+        return procedureName;
+    }
+
     @Override
     public String toString() {
         return "Procedure \t{" +
