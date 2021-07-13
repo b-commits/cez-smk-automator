@@ -3,9 +3,9 @@ package model;
 import java.time.LocalDate;
 
 public class Procedure {
-    private String patientLastName;
-    private String patientFirstName;
-    private String procedureName;
+    private final String patientLastName;
+    private final String patientFirstName;
+    private final String procedureName;
     private LocalDate date;
 
     public Procedure(String patientLastName, String patientFirstName, String procedureName,  LocalDate date) {
@@ -22,6 +22,16 @@ public class Procedure {
 
     }
 
+    public boolean isNonRTGProcedure() {
+        // Todo refactor with enum
+        return procedureName.equalsIgnoreCase("fistulografia") ||
+                procedureName.equalsIgnoreCase("GOPP") ||
+                procedureName.equalsIgnoreCase("Pasaż") ||
+                procedureName.equalsIgnoreCase("urografia") ||
+                procedureName.equalsIgnoreCase("cystografia") ||
+                procedureName.equalsIgnoreCase("przełyk");
+    }
+
     public String getPatientInitials() {
         return patientFirstName.charAt(0)+" "+patientLastName.charAt(0);
     }
@@ -32,7 +42,7 @@ public class Procedure {
 
     @Override
     public String toString() {
-        return "Procedure{" +
+        return "Procedure \t{" +
                 "patientLastName='" + patientLastName + '\'' +
                 ", patientFirstName='" + patientFirstName + '\'' +
                 ", procedureName='" + procedureName + '\'' +

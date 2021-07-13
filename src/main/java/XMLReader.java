@@ -11,10 +11,13 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * @author Bartosz Gościcki
+ * Processes data from SMK XML data dump.
+ */
 public class XMLReader {
 
     private static final SimpleDateFormat xmlDateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -31,7 +34,8 @@ public class XMLReader {
     public static void main(String[] args) {
         tokenizeDataDump();
         serializeValidData();
-        getAllProcedureInfo();
+//        getAllProcedureInfo();
+        getNonRTG().forEach(System.out::println);
     }
 
     public static Document getDocument(String docString)  {
@@ -62,12 +66,16 @@ public class XMLReader {
         }
     }
 
+    public static List<Procedure> getNonRTG() {
+        return procedures.stream().filter(Procedure::isNonRTGProcedure).collect(Collectors.toList());
+    }
+
     public static void serializeValidData()  {
         // todo Gotta refactor this.
         procedureTokens.values().forEach(value -> {
             if (value.size() == COMPLETE_ROW_LENGTH) {
-                String patientName = value.get(1);
-                String procedureName = value.get(4);
+                String patientName = value.get(1).toLowerCase();
+                String procedureName = value.get(4).toLowerCase();
                 LocalDate date = null;
                 try {
                     date = LocalDate.parse(formFillFormat.format(xmlDateFormat.parse(value.get(6))));
