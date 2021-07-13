@@ -1,8 +1,10 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.Locale;
 
 public class Procedure {
+
     private final String patientLastName;
     private final String patientFirstName;
     private final String procedureName;
@@ -23,7 +25,6 @@ public class Procedure {
     }
 
     public boolean isNonRTGProcedure() {
-        // Todo refactor with enum
         return procedureName.equalsIgnoreCase("fistulografia") ||
                 procedureName.equalsIgnoreCase("GOPP") ||
                 procedureName.equalsIgnoreCase("Pasaż") ||
@@ -33,7 +34,7 @@ public class Procedure {
     }
 
     public String getPatientInitials() {
-        return patientFirstName.charAt(0)+" "+patientLastName.charAt(0);
+        return (patientFirstName.charAt(0)+""+patientLastName.charAt(0)).toUpperCase(Locale.ROOT);
     }
 
     public String getSex() {

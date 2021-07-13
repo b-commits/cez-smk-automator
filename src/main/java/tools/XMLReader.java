@@ -1,3 +1,5 @@
+package tools;
+
 import model.Procedure;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -15,7 +17,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author Bartosz Gościcki
  * Processes data from SMK XML data dump.
  */
 public class XMLReader {
@@ -25,18 +26,10 @@ public class XMLReader {
     private static final Integer COMPLETE_ROW_LENGTH = 12;
     private static final Integer INCOMPLETE_ROW_LENGTH = 8;
     private static final Integer MIN_VALID_ROW_LENGTH = 7;
-    private static final String XML_FILE_PATH = "C:\\Users\\busio\\Desktop\\untitled2\\src\\main\\java\\raport.xml";
+    private static final String XML_FILE_PATH = "C:\\Users\\busio\\Desktop\\untitled2\\src\\main\\resources\\raport.xml";
     private static final String MAIN_DATA_NODE_NAME = "Row";
     private static final HashMap<Integer, ArrayList<String>> procedureTokens = new HashMap<>();
     private static final ArrayList<Procedure> procedures = new ArrayList<>();
-
-
-    public static void main(String[] args) {
-        tokenizeDataDump();
-        serializeValidData();
-//        getAllProcedureInfo();
-        getNonRTG().forEach(System.out::println);
-    }
 
     public static Document getDocument(String docString)  {
         try {
@@ -94,14 +87,17 @@ public class XMLReader {
         });
     }
 
+    @SuppressWarnings("unused")
     public static void getAllProcedureInfo() {
         procedures.forEach(System.out::println);
     }
 
+    @SuppressWarnings("unused")
     public static int getValidRecordCount() {
        return (int) procedureTokens.values().stream().filter(value -> value.size() > MIN_VALID_ROW_LENGTH).count();
     }
 
+    @SuppressWarnings("unused")
     public static void getTokens() {
         procedureTokens.values().forEach(value -> {
             value.forEach(System.out::println);
