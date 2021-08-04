@@ -14,30 +14,37 @@ import static tools.XPathProvider.*;
  * Automizes SMK webpage navigation and authentication and handles data entry
  * with parsed data dump.
  */
-public class SMKAutomator {
 
-    private static final String LOGIN = "luq1792@gmail.com";
-    private static final String PASSWORD = "";
+//todo Refactor XPaths to WebElements.
+public final class SMKAutomator {
+
+    private final String login;
+    private final String password;
     private static final WebDriver driver = new FirefoxDriver();
     private static final WebDriverWait waiter = new WebDriverWait(driver, TIMEOUT);
 
-    public static void main(String[] args) {
+    public SMKAutomator(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public void run() {
         loginSMK();
         navigateNonRTGForm();
         fillForm();
     }
 
-    public static void loginSMK() {
+    private void loginSMK() {
         System.setProperty("webdriver.gecko.driver", "/geckodriver.exe");
         driver.manage().window().maximize();
         driver.get(SMK_LOGIN_URL);
-        driver.findElement(By.name(USERNAME_HTML_NAME)).sendKeys(LOGIN);
-        driver.findElement(By.name(PASSWORD_HTML_NAME)).sendKeys(PASSWORD);
+        driver.findElement(By.name(USERNAME_HTML_NAME)).sendKeys(login);
+        driver.findElement(By.name(PASSWORD_HTML_NAME)).sendKeys(password);
         driver.findElement(By.name(LOGIN_HTML_NAME)).sendKeys(Keys.ENTER);
         waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("23")));
     }
 
-    public static void navigateNonRTGForm() {
+    private void navigateNonRTGForm() {
         driver.findElement(By.xpath("(//button[@type='button'][contains(.,'Wybierz')])[3]")).sendKeys(Keys.ENTER);
         waiter.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='M0 B2'][contains(.,'\uE60E')]")));
         driver.findElement(By.id("1001")).sendKeys(Keys.ENTER);
@@ -57,7 +64,7 @@ public class SMKAutomator {
         hold(250);
     }
 
-    public static void fillForm() {
+    private void fillForm() {
         XMLReader.tokenizeDataDump();
         XMLReader.serializeValidData();
         XMLReader.getNonRTG().forEach(procedure -> {
@@ -74,7 +81,7 @@ public class SMKAutomator {
         });
     }
 
-    public static void hold(int millis) {
+    private static void hold(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

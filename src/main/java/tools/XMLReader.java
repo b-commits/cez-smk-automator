@@ -19,17 +19,19 @@ import java.util.stream.Collectors;
 /**
  * Processes data from SMK XML data dump.
  */
-public class XMLReader {
+public final class XMLReader {
 
     private static final SimpleDateFormat xmlDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final SimpleDateFormat formFillFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final Integer COMPLETE_ROW_LENGTH = 12;
     private static final Integer INCOMPLETE_ROW_LENGTH = 8;
     private static final Integer MIN_VALID_ROW_LENGTH = 7;
-    private static final String XML_FILE_PATH = "C:\\Users\\busio\\Desktop\\untitled2\\src\\main\\resources\\raport.xml";
+    private static final String XML_DUMP_PATH = "src\\main\\resources\\raport.xml";
     private static final String MAIN_DATA_NODE_NAME = "Row";
     private static final HashMap<Integer, ArrayList<String>> procedureTokens = new HashMap<>();
     private static final ArrayList<Procedure> procedures = new ArrayList<>();
+
+    private XMLReader() { }
 
     public static Document getDocument(String docString)  {
         try {
@@ -44,7 +46,7 @@ public class XMLReader {
     }
 
     public static void tokenizeDataDump() {
-        Document xmlDoc = getDocument(XML_FILE_PATH);
+        Document xmlDoc = getDocument(XML_DUMP_PATH);
         NodeList rows = Objects.requireNonNull(xmlDoc).getElementsByTagName(MAIN_DATA_NODE_NAME);
         for (int i = 0; i < rows.getLength(); i++) {
             ArrayList<String> tokens = new ArrayList<>();
@@ -59,12 +61,15 @@ public class XMLReader {
         }
     }
 
+    public static void showNonRTG() {
+        procedures.stream().filter(Procedure::isNonRTGProcedure).forEach(System.out::println);
+    }
+
     public static List<Procedure> getNonRTG() {
         return procedures.stream().filter(Procedure::isNonRTGProcedure).collect(Collectors.toList());
     }
 
     public static void serializeValidData()  {
-        // todo Gotta refactor this.
         procedureTokens.values().forEach(value -> {
             if (value.size() == COMPLETE_ROW_LENGTH) {
                 String patientName = value.get(1).toLowerCase();
