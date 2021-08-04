@@ -18,5 +18,11 @@ public class XPathProvider {
     public static final String USERNAME_HTML_NAME = "username";
     public static final String PASSWORD_HTML_NAME = "password";
     public static final String LOGIN_HTML_NAME = "login";
+    public static final String LOGIN_BUTTON = "(//button[@type='button'][contains(.,'Wybierz')])[3]";
+    public static final String CONTINUE = "//span[@class='M0 B2'][contains(.,'\uE60E')]";
+    public static final String BUTTON_FIRST = "(//button[contains(@type,'button')])[24]";
+    public static final String BUTTON_SECOND = "(//button[contains(@type,'button')])[25]";
+    public static final String BUTTON_THIRD = "(//button[contains(@type,'button')])[36]";
+
 
 }

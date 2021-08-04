@@ -15,25 +15,32 @@ import static tools.XPathProvider.*;
  * with parsed data dump.
  */
 
-//todo Refactor XPaths to WebElements.
+// todo Refactor XPaths to WebElements.
 public final class SMKAutomator {
 
     private final String login;
     private final String password;
     private static final WebDriver driver = new FirefoxDriver();
     private static final WebDriverWait waiter = new WebDriverWait(driver, TIMEOUT);
+    private static final String FIRST_BTN_ID = "1001";
+    private static final String SECOND_BTN_ID = "1501";
+    private static final String THIRD_BTN_ID = "509";
+    private static final String CONTINUE_BTN_ID = "23";
+    private static final String FOURTH_BTN_ID = "gwt-uid-154";
 
     public SMKAutomator(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
+    // Runs navigation and automatically fills out the form with datapoints specified in the XML data dump.
     public void run() {
         loginSMK();
         navigateNonRTGForm();
         fillForm();
     }
 
+    // Logs user in with the credentials within GUI form (MenuController class)
     private void loginSMK() {
         System.setProperty("webdriver.gecko.driver", "/geckodriver.exe");
         driver.manage().window().maximize();
@@ -41,29 +48,31 @@ public final class SMKAutomator {
         driver.findElement(By.name(USERNAME_HTML_NAME)).sendKeys(login);
         driver.findElement(By.name(PASSWORD_HTML_NAME)).sendKeys(password);
         driver.findElement(By.name(LOGIN_HTML_NAME)).sendKeys(Keys.ENTER);
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("23")));
+        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id(CONTINUE_BTN_ID)));
     }
 
+    // Navigates to a web form that allows docs to register procedures.
     private void navigateNonRTGForm() {
-        driver.findElement(By.xpath("(//button[@type='button'][contains(.,'Wybierz')])[3]")).sendKeys(Keys.ENTER);
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='M0 B2'][contains(.,'\uE60E')]")));
-        driver.findElement(By.id("1001")).sendKeys(Keys.ENTER);
-        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id("gwt-uid-154")));
-        driver.findElement(By.id("gwt-uid-154")).click();
-        driver.findElement(By.id("1501")).click();
+        driver.findElement(By.xpath(LOGIN_BUTTON)).sendKeys(Keys.ENTER);
+        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CONTINUE)));
+        driver.findElement(By.id(FIRST_BTN_ID)).sendKeys(Keys.ENTER);
+        waiter.until(ExpectedConditions.visibilityOfElementLocated(By.id(FOURTH_BTN_ID)));
+        driver.findElement(By.id(FOURTH_BTN_ID)).click();
+        driver.findElement(By.id(SECOND_BTN_ID)).click();
         hold(1000);
-        driver.findElement(By.id("509")).click();
+        driver.findElement(By.id(THIRD_BTN_ID)).click();
         hold(5000);
-        driver.findElement(By.xpath("(//button[contains(@type,'button')])[24]")).click();
+        driver.findElement(By.xpath(BUTTON_FIRST)).click();
         hold(250);
-        driver.findElement(By.xpath("(//button[contains(@type,'button')])[25]")).click();
+        driver.findElement(By.xpath(BUTTON_SECOND)).click();
         hold(250);
-        driver.findElement(By.xpath("(//button[contains(@type,'button')])[36]")).click();
+        driver.findElement(By.xpath(BUTTON_THIRD)).click();
         hold(250);
         driver.findElement(By.xpath(ADD_XPATH)).click();
         hold(250);
     }
 
+    // Fills out the form with XML data dump parsed by XMLReader class.
     private void fillForm() {
         XMLReader.tokenizeDataDump();
         XMLReader.serializeValidData();
