@@ -106,7 +106,6 @@ public final class XMLReader {
     public static void getTokens() {
         procedureTokens.values().forEach(value -> {
             value.forEach(System.out::println);
-            System.out.println("===============");
         });
     }
 
